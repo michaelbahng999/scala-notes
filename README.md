@@ -5,7 +5,7 @@ Scala is quite different from Java/Python/oo-oriented languages. This summarizes
 Run examples in https://scastie.scala-lang.org or REPL
 
 ## Meta
-- *bold* denotes terminology
+- **bold** denotes terminology
 - `whatever this is` denotes keywords
 - _italics_ denotes best practices
 - FP: functional programming
@@ -64,7 +64,7 @@ val s: String =
 
 ## Immutability
 Being a FP language, scala uses immutable data structures by default. This makes concurrency simpler.
-- `var` variables can be reassigned; _you should almost never need to use var_
+- `var` variables can be reassigned; _you almost never need to use var_
 - `val` variables cannot be reassigned, _use vals whenever possible_
 - mutable data structures exist: https://www.scala-lang.org/api/current/scala/collection/mutable/Map.html
   - you must import from `scala.collection.mutable`
@@ -141,34 +141,21 @@ def companionObject: Unit = {
 ```
 - Think of the `object` as a singleton object (you never need to implement the singleton design pattern!)
 - It can also be used for "static" methods
-- The object is usually called a *companion object* since it accompanies a class
+- The object is usually called a **companion object** since it accompanies a class
 - Often, you put static methods/properties and implicit definitions (covered later) in the companion object
 
 ### Traits
 - basically interfaces with (optional) default implementations (so, more similar to mixins if you know those)
 - traits can extend other traits
-- you may hear about *cake pattern* for dependency injection: _avoid using cake pattern if you can_
+- you may hear about **cake pattern** for dependency injection: _avoid using cake pattern if you can_
   - see https://kubuszok.com/2018/cake-antipattern/ if you want to
-```scala
-// because it usually ends up like this
-object PaymentTransactionApiController
-  extends TransactionApiController
-  with ConfigComponentImpl
-  with DatabaseComponentImpl
-  with UserRepositoryComponentImpl
-  with SessionRepositoryComponentImpl
-  with SecurityServicesComponentImpl
-  with ExternalPaymentApiServicesComponentImpl
-  with PaymentServicesComponentImpl
-  with TransactionServicesComponentImpl
-```
 
 ### Case classes
 You may also see this a lot:
 ```scala
 case class Person(age: Int, name: String)
 ```
-- This is a *case class*, which is _great for creating data objects_
+- This is a **case class**, which is _great for creating data objects_
 - `equals`, `hashCode`, and `toString` are auto implemented
 - can initialize without `new`
 - no need for getters/setters; _getters/setters are antipatterns_
@@ -178,7 +165,7 @@ case class Person(age: Int, name: String)
 
 ## FP features
 ### Pattern matching - IMPORTANT
-- if/else is hardly used in scala thanks to *pattern matching*
+- if/else is hardly used in scala thanks to **pattern matching**
 - like switch/case statements, except more powerful thanks to type system
 
 Simple example (shows basic syntax, not why it's preferred over if/else):
@@ -284,17 +271,19 @@ Map(1 -> "a").map {
 
 ## Type classes - ADVANCED
 - In OOP, you pass arguments to classes to create instances
-- In FP, you pass *type parameters* to *type classes* to create a new *type*
+- In FP, you pass **type parameters** to **type classes** to create a new **type**
   - this lets you get "retroactive polymorphism"; you can achieve polymorphism _after_ classes/types are defined
   - you can "monkeypatch" safely
   - useful for adding functionality to 3rd-party packages, or classes that can't be modified
   - see implicit classes for more examples
 - https://danielwestheide.com/blog/the-neophytes-guide-to-scala-part-12-type-classes/ has a good motivation and example
+- layman's version: in OOP a type is polymorphic because its subtypes are defined ahead of time; in FP, a type is determined by what it can do
 
 ## Monadic data types - IMPORTANT
-- `Option`, `List`, `Either`, `Try` and sometimes `Future` are all *monads*
-- sounds difficult, but they're not so bad
+- `Option`, `List`, `Either`, `Try` and sometimes `Future` are all **monads**
 - illustrative description of monads: http://adit.io/posts/2013-04-17-functors,_applicatives,_and_monads_in_pictures.html
+- working with them is easy, understanding them is hard (math); fortunately, we just need to work with them
+
 
 
 
