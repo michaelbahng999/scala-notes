@@ -11,6 +11,7 @@ Run examples in https://scastie.scala-lang.org or REPL
 - FP: functional programming
 - OOP: object-oriented programming
 - The most important language features have been marked with IMPORTANT
+- Not-so-important features have been marked with ADVANCED
 
 ## Oddities
 ### Tail recursion
@@ -90,7 +91,7 @@ Explanation:
 - call `foldLeft` (similar to `reduce`) with the initial value of an empty map
 - concatenate (`++`) a new map with the new entry
 
-# A note about _
+### A note about _
 - you may see `map`, `filter`, `reduce` methods with `_`
 - this is a scala feature that is even more concise than lambdas
 ```scala
@@ -254,5 +255,46 @@ def patternMatch(e: Edible) = e match {
 - note that the pattern match goes in order from top to bottom (which is why the 4th case only matches on expired food)
 - note how certain data structures can be matched; e.g. `Option` with `Some/None`, `List` with `head::tail`
   - these are specific to each data structure, so you'll have to look it up
+  
+Why is this better than the traditional if/else?
+- pattern matches are just a simple function, instead of nested if/else blocks
+- prevents using weird control flow mechanisms, such as `break` or `throw+try/catch`
+- easier to match on types
+
+### A note about case lambdas
+You may run into this when using `map`, `reduce`, `filter` on a `Map`:
+```scala
+// entries in map to list of strings
+
+// compiles, but ugly
+Map(1 -> "a").map(tup => s"${tup._1} ${tup._2}")
+// does NOT compile
+Map(1 -> "a").map((i, s) => s"$i $s")
+// this compiles
+Map(1 -> "a").map { case (i, s) => s"$i $s" }
+// this compiles and handles other types
+Map(1 -> "a").map {
+  case (i: Int, s: String) => s"$i $s"
+  case _ => "should never hit this, but hey"
+}
+```
+- this is common when working with lambdas that have a tuple as an argument
+- scala can't infer the tuple's specific type, so you have to pattern match
+- can add other cases to pattern match on (see the 4th example)
+
+## Type classes - ADVANCED
+- In OOP, you pass arguments to classes to create instances
+- In FP, you pass *type parameters* to *type classes* to create a new *type*
+  - this lets you get "retroactive polymorphism"; you can achieve polymorphism _after_ classes/types are defined
+  - you can "monkeypatch" safely
+  - useful for adding functionality to 3rd-party packages, or classes that can't be modified
+  - see implicit classes for more examples
+- https://danielwestheide.com/blog/the-neophytes-guide-to-scala-part-12-type-classes/ has a good motivation and example
+
+## Monadic data types - IMPORTANT
+- `Option`, `List`, `Either`, `Try` and sometimes `Future` are all *monads*
+- sounds difficult, but they're not so bad
+- illustrative description of monads: http://adit.io/posts/2013-04-17-functors,_applicatives,_and_monads_in_pictures.html
+
 
 
