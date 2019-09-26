@@ -2,10 +2,15 @@
 
 Scala is actually very different from Java/Python/etc., let's get those differences out of the way
 
+## Meta
+- *bold* denotes terminology
+- `whatever this is` denotes keywords
+- _italics_ denotes best practices
+
 ## Control flow
 ### Return and if/else
 `return` keyword isn't used very often in scala, that's because functions "return" whatever
-value's on the last line. You should never have to use the `return` keyword; it may cause unintended effects
+value's on the last line.
 ```scala
 def badControlFlow(s: String): String = {
   if (s == "a") {
@@ -28,15 +33,18 @@ def goodControlFlow(s: String) = {
   s ++ "c"
 }
 ```
-if/else is pretty uncommon in scala; _pattern matching_ is much better for conditionals (shown later)
+- if/else is pretty uncommon in scala; _*pattern matching* is usually better_ (shown later)
+- _avoid using `return`_, it may cause unintended effects/piss off the compiler
+  - this seems inconvenient, but also means your function will only have one exit point
 
 ## Immutability
-- `var` variables can be reassigned; you should _not_ have to use this
-- `val` variables cannot be reassigned, and should be used for all variables
-Being a FP language, scala uses immutable data structures by default.
+Being a FP language, scala uses immutable data structures by default. This makes concurrency easy.
+- `var` variables can be reassigned; _you should almost never need to use var_
+- `val` variables cannot be reassigned, _use vals whenever possible_
 - mutable data structures exist: https://www.scala-lang.org/api/current/scala/collection/mutable/Map.html
-  - note how you must import from `scala.collection.mutable`
-- however, you should use immutable data structures whenever possible; use `map`, `filter`, `reduce/fold` methods to work with them.
+  - you must import from `scala.collection.mutable`
+- _use immutable data structures whenever possible_
+  - use `map`, `filter`, `reduce/fold` methods to work with them
 - creating a modified copy of an instance, instead of mutating it, is the way to go in scala.
 ```scala
 def badMutability(): Unit = {
@@ -82,11 +90,20 @@ def companionObject: Unit = {
 ```
 - Think of the `object` as a singleton object (you never need to implement the singleton design pattern!)
 - It can also be used for "static" methods
-- The object is usually called a "companion object" since it accompanies a class
+- The object is usually called a *companion object* since it accompanies a class
 - Often, you put static methods/properties and implicit definitions (covered later) in the companion object
+
+### Traits
+Traits are basically interfaces with default implementations (so, more similar to mixins).
 
 ### Case classes
 You may also see this a lot:
 ```scala
-case class Person(age: String, 
+case class Person(age: Int, name: String)
 ```
+- This is a *case class*, which is a convenience to create data objects
+- `equals`, `hashCode`, and `toString` are auto implemented
+- can initialize without `new`
+- no need for getters/setters; _getters/setters are antipatterns_
+- favor adding functions to the case object instead of adding methods
+- full list: https://www.scala-lang.org/old/node/258
